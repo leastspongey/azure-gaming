@@ -43,7 +43,7 @@
             "metadata": {
                 "description": "The type of storage for the Virtual Machine. \"Standard_LRS\" for \"Standard HDD\", \"StandardSSD_LRS\" for \"Standard SSD\", \"Premium_LRS\" for \"Premium SSD\"."
             },
-            "defaultValue": "Standard_LRS"
+            "defaultValue": "StandardSSD_LRS"
         },
         "VmIpType": {
             "type": "string",
@@ -79,7 +79,7 @@
             "metadata": {
                 "description": "The time zone for daily auto-shutdown."
             },
-            "defaultValue": "Pacific Standard Time"
+            "defaultValue": "AUS Eastern Standard Time"
         },
         "autoShutdownTime": {
             "type": "string",
@@ -93,7 +93,7 @@
             "metadata": {
                 "description": "Location of the setup script."
             },
-            "defaultValue": "https://raw.githubusercontent.com/ecalder6/azure-gaming/master"
+            "defaultValue": "https://raw.githubusercontent.com/leastspongey/azure-gaming/master"
         },
         "windowsUpdate": {
             "type": "bool",
