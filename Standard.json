@@ -231,17 +231,17 @@
                     "vmSize": "[parameters('VmType')]"
                 },
                 "storageProfile": {
+                    "osDisk": {
+                        "createOption": "fromImage",
+                        "managedDisk": {
+                            "storageAccountType": "[parameters('VmStorageType')]"
+                        }
+                    },
                     "imageReference": {
                         "publisher": "MicrosoftWindowsDesktop",
                         "offer": "Windows-10",
                         "sku": "20h1-pro",
                         "version": "latest"
-                    },
-                    "osDisk": {
-                        "createOption": "FromImage",
-                        "managedDisk": {
-                            "storageAccountType": "[parameters('VmStorageType')]"
-                        }
                     }
                 },
                 "networkProfile": {
