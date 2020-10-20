@@ -1,6 +1,25 @@
 # Cloud Gaming Made Easy
 
-## Update 1/11/2020
+Credit: Forked from ecalder6's Most Excellent setup scripts.
+
+Explores my own ideas for where to take this; not intended for use by anyone.
+
+## Update 2020-10-20 - Experimentation
+
+This fork is a trial implementation of Windows 10 rather than Windows Server 2016. It currently specifies:
+- Regular SSDs (Premium isn't an option on nv6)
+- Aus Eastern time (The One True Time Zone)
+- Scaling is improved by default when in RDP vs 2016
+ 
+### Known Issues
+
+- Audio doesn't work in Steam after installation (OK in RDP)
+  - Installing the Razer Surround Audio driver as shown in the Parsec preparation tool addressed this for Steam
+  - https://github.com/parsec-cloud/Parsec-Cloud-Preparation-Tool 
+- Need to use minimizable Steam Streaming app to access desktop outside RDP for display res configuration
+- Assignment of a game disk to the VM is a possible improvement, but I haven't worked out whether I really want to focus on building VMs on the fly (cattle) or carefully manage them (pets)
+
+## Update 2020-01-11 (pre-fork)
 
 1. You no longer need to use ZeroTier VPN. Steam can now stream games from outside your LAN. When deploying your VM, leave the "Network ID" field empty.
 2. The [NV-series](https://docs.microsoft.com/en-us/azure/virtual-machines/sizes-gpu) VMs deployed in this guide do not support Premium SSD. If you want Premium SSD, use [NVv3-series](https://docs.microsoft.com/en-us/azure/virtual-machines/nvv3-series). If you are feeling adventurous, you can try out the new [NVv4-series](https://docs.microsoft.com/en-us/azure/virtual-machines/nvv4-series) with [AMD MI25](https://www.amd.com/en/products/professional-graphics/instinct-mi25) and AMD EPYC 7V12(Rome). No idea if this works, but please let me know if it does :)
@@ -10,11 +29,17 @@
 Effortlessly stream the latest games on Azure. This project automates the set-up process for cloud gaming on a Nvidia M60 GPU on Azure.
 The development of this project is heavily inspired by this [excellent guide](https://lg.io/2016/10/12/cloudy-gamer-playing-overwatch-on-azures-new-monster-gpu-instances.html).
 
-The automated setup first deploys an Azure NV6 virtual machine (VM) with a single Nvidia M60 GPU (1/2 of a M60 graphics card), configures the official Nvidia Driver Extension that installs the Nvidia driver on the VM, and finally deploys a Custom Script Extension to run the setup script. The setup script configures everything that's needed to run Steam games on the VM, such as configuring some Nvidia driver settings, setting up auto login for Windows, and eventually connecting to ZeroTier VPN.
+The automated setup:
+- deploys an Azure NV6 virtual machine (VM) with Windows 10 (2004) 
+- a single Nvidia M60 GPU (1/2 of a M60 graphics card)
+- configures the official Nvidia Driver Extension installs the Nvidia driver on the VM
+- deploys a Custom Script Extension to run the setup script
+
+The setup script configures everything that's needed to run Steam games on the VM, such as configuring some Nvidia driver settings, setting up auto login for Windows, and optionally connecting to ZeroTier VPN.
 
 ## Disclaimer
 
-**This software comes with no warranty of any kind**. USE AT YOUR OWN RISK! This a personal project and is NOT endorsed by Microsoft. If you encounter an issue, please submit it on GitHub.
+**This software comes with no warranty of any kind**. USE AT YOUR OWN RISK! This a personal project and is NOT endorsed by any company mentioned within! Issues _may_ be ignored.
 
 ## How Do I Stream Games?
 
