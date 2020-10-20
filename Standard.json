@@ -236,7 +236,7 @@
                         "offer": "Windows-10",
                         "sku": "20h1-pro",
                         "version": "latest"
-                    }
+                    },
                     "osDisk": {
                         "createOption": "FromImage",
                         "managedDisk": {
