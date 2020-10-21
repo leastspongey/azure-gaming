@@ -111,11 +111,11 @@ Function Modify-RazerManifest {
 
  #Audio Driver Install
 function Install-RazerAudio {
-    (New-Object System.Net.WebClient).DownloadFile("http://rzr.to/surround-pc-download", "$LocalFolder\Downloads\razer-surround-driver.exe")
-    Extract-RazerAudio
-    Modify-RazerManifest
+    (New-Object System.Net.WebClient).DownloadFile("http://rzr.to/surround-pc-download", "$LocalFolder\Downloads\razer-surround-driver.exe") 
+    ExtractRazerAudio
+    ModifyRazerManifest
     $OriginalLocation = Get-Location
-    Set-Location -Path "$LocalFolder\Downloads\razer-surround-driver\$TEMP\RazerSurroundInstaller\'
+    Set-Location -Path "$LocalFolder\Downloads\razer-surround-driver\$TEMP\RazerSurroundInstaller\"
     Start-Process RzUpdateManager.exe
     Set-Location $OriginalLocation
     Set-Service -Name audiosrv -StartupType Automatic
