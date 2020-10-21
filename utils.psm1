@@ -1,14 +1,12 @@
 [Net.ServicePointManager]::SecurityProtocol = [System.Net.SecurityProtocolType]::Tls12
 $webClient = new-object System.Net.WebClient
 
-function Disable-InternetExplorerESC {
-    # From https://stackoverflow.com/questions/9368305/disable-ie-security-on-windows-server-via-powershell
-    $AdminKey = "HKLM:\SOFTWARE\Microsoft\Active Setup\Installed Components\{A509B1A7-37EF-4b3f-8CFC-4F3A74704073}"
-    $UserKey = "HKLM:\SOFTWARE\Microsoft\Active Setup\Installed Components\{A509B1A8-37EF-4b3f-8CFC-4F3A74704073}"
-    Set-ItemProperty -Path $AdminKey -Name "IsInstalled" -Value 0 -Force
-    Set-ItemProperty -Path $UserKey -Name "IsInstalled" -Value 0 -Force
-    Stop-Process -Name Explorer -Force
-    Write-Output "IE Enhanced Security Configuration (ESC) has been disabled." -ForegroundColor Green
+$localFolder = "C:\CloudGaming"
+
+function create-LocalFolders{
+    if((Test-Path -Path $localFolder) -eq $true) {} Else {New-Item -Path $localFolder -ItemType directory | Out-Null}
+    if((Test-Path -Path "$localFolder\Drivers") -eq $true) {} Else {New-Item -Path "$localFolder\Drivers" -ItemType Directory | Out-Null}
+    if((Test-Path -Path "$localFolder\Downloads") -eq $true) {} Else {New-Item -Path "$localFolder\Downloads" -ItemType Directory | Out-Null}
 }
 
 function Update-Windows {
@@ -99,6 +97,30 @@ function Enable-Audio {
     Start-Service Audiosrv
 }
 
+#Move extracts Razer Surround Files into correct location
+Function Extract-RazerAudio {
+    cmd.exe /c '"C:\Program Files\7-Zip\7z.exe" x C:\CloudGaming\Downloads\razer-surround-driver.exe -oC:\CloudGaming\Downloads\razer-surround-driver -y' | Out-Null
+}
+
+#modifies the installer manifest to run without interraction
+Function Modify-RazerManifest {
+    $InstallerManifest = "$LocalFolder\Downloads\razer-surround-driver\$TEMP\RazerSurroundInstaller\InstallerManifest.xml"
+    $regex = '(?<=<SilentMode>)[^<]*'
+    (Get-Content $InstallerManifest) -replace $regex, 'true' | Set-Content $InstallerManifest -Encoding UTF8
+}
+
+ #Audio Driver Install
+function Install-RazerAudio {
+    (New-Object System.Net.WebClient).DownloadFile("http://rzr.to/surround-pc-download", "$LocalFolder\Downloads\razer-surround-driver.exe")
+    Extract-RazerAudio
+    Modify-RazerManifest
+    $OriginalLocation = Get-Location
+    Set-Location -Path "$LocalFolder\Downloads\razer-surround-driver\$TEMP\RazerSurroundInstaller\'
+    Start-Process RzUpdateManager.exe
+    Set-Location $OriginalLocation
+    Set-Service -Name audiosrv -StartupType Automatic
+}
+
 function Install-VirtualAudio {
     $compressed_file = "VBCABLE_Driver_Pack43.zip"
     $driver_folder = "VBCABLE_Driver_Pack43"
@@ -170,6 +192,11 @@ function Join-Network ($network) {
 function Install-NSSM {
     Write-Output "Installing NSSM for launching services that run apps at startup"
     choco install nssm --force
+}
+
+function Install-7zip{
+    Write-Output "Installing 7-Zip"
+    choco install 7zip --force
 }
 
 function Install-Steam {

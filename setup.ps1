@@ -8,7 +8,7 @@ param (
 )
 
 function Get-UtilsScript ($script_name) {
-    $url = "https://raw.githubusercontent.com/ecalder6/azure-gaming/master/$script_name"
+    $url = "https://raw.githubusercontent.com/leastspongey/azure-gaming/master/$script_name"
     Write-Host "Downloading utils script from $url"
     [Net.ServicePointManager]::SecurityProtocol = [System.Net.SecurityProtocolType]::Tls12
 
@@ -19,6 +19,7 @@ function Get-UtilsScript ($script_name) {
 $script_name = "utils.psm1"
 Get-UtilsScript $script_name
 Import-Module "C:\$script_name"
+Create-LocalFolders
 
 if ($windows_update) {
     Update-Windows
@@ -33,18 +34,12 @@ if ($manual_install) {
 Edit-VisualEffectsRegistry
 Add-DisconnectShortcut
 
-if ($network) {
-    Install-Chocolatey
-    Install-VPN
-    Join-Network $network
-}
-
 Disable-Devices
 Disable-TCC
+Install-Chocolatey
 Enable-Audio
-if($virtual_audio){
-    Install-VirtualAudio
-}
+Install-7zip
 Install-Steam
+Install-RazerAudio
 Add-AutoLogin $admin_username $admin_password
 Restart-Computer

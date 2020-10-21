@@ -13,8 +13,10 @@ This fork is a trial implementation of Windows 10 rather than Windows Server 201
  
 ### Known Issues
 
-- Audio doesn't work in Steam after installation (OK in RDP)
+- Audio didn't work in Steam after installation (OK in RDP)
+  - default is to not install WDK + Audio driver - didn't spot that
   - Installing the Razer Surround Audio driver as shown in the Parsec preparation tool addressed this for Steam
+  - Possibly with less need for a WDK than the previous solution
   - https://github.com/parsec-cloud/Parsec-Cloud-Preparation-Tool 
 - Need to use minimizable Steam Streaming app to access desktop outside RDP for display res configuration
 - Assignment of a game disk to the VM is a possible improvement, but I haven't worked out whether I really want to focus on building VMs on the fly (cattle) or carefully manage them (pets)
